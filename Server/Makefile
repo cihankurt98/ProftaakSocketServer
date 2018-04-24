@@ -3,7 +3,7 @@ CFLAGS=-Wall -Werror -pedantic -ggdb -O0 -std=c++98 -Iproduct
 SOURCES=$(wildcard *.cpp)
 HEADERS=$(wildcard *.h)
 
-CC=arm-linux-g++
+CC=arm-linux-gnueabihf-g++
 
 .phony: all clean
 
