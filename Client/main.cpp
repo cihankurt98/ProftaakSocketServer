@@ -1,6 +1,7 @@
 #include <iostream>
-
+#include <netinet/in.h>
 #include "Client.h"
+#include "udpReceiver.h"
 
 static void CreateSocket(Client* client)
 {
@@ -68,6 +69,7 @@ static void showMenu( void )
 {
 	std::cout << ("\n\nClient Menu\n");
 	std::cout << ("===============\n");
+	std::cout << ("(A) Receive Broadcast\n");
 	std::cout << ("(1) Create socket\n");
 	std::cout << ("(2) Connect to server\n");
 	std::cout << ("(3) SendMessage\n");
@@ -83,6 +85,10 @@ int main(void)
 {
 	bool quit = false;
 	Client client;
+	udpReceiver udpreceiver;
+	
+	udpreceiver.CreateSocket();
+	udpreceiver.Bind();	
 
 	while (!quit)
 	{
@@ -113,6 +119,13 @@ int main(void)
 		case '9' :
 			quit = true;
 			break;
+		case 'A' :
+		{
+			udpreceiver.Receive();	
+			struct sockaddr_in test = udpreceiver.getAddr();
+			client.setServer(test);	
+			break;
+		}
 		default:
 			std::cout << "\n\nChoice not recognized(" << choice << ")" << std::endl;
 			break;

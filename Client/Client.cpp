@@ -27,7 +27,7 @@ int Client::CreateSocket()
 		return -1;
 	}
 
-	server.sin_addr.s_addr = inet_addr("10.0.0.3"); //was localhost 127.0.0.1 (server en client local)
+	//server.sin_addr.s_addr = inet_addr("192.168.19.167");
 	server.sin_family = AF_INET;
 	server.sin_port = htons( 8888 );
 	return 1;
@@ -63,4 +63,9 @@ int Client::ReceiveMessage(char server_reply[])
 void Client::EndConnection()
 {
 	close(sock);
+}
+
+void Client::setServer(struct sockaddr_in servero)
+{
+	server = servero;
 }

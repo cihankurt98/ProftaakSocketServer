@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "Server.h"
+#include "udpSender.h"
 
 static void CreateSocket(Server* server)
 {
@@ -59,6 +60,7 @@ static void showMenu( void )
 {
 	std::cout << ("\n\nSocket Server Menu\n");
 	std::cout << ("===============\n");
+	std::cout << ("(A) Find Printers\n");
 	std::cout << ("(1) Create socket\n");
 	std::cout << ("(2) Bind\n");
 	std::cout << ("(3) Listen\n");
@@ -70,10 +72,21 @@ static void showMenu( void )
 }
 
 
-int main(void)
+int main(int argc, char *argv[])
 {
+	if(argc<1)
+	{
+		printf("usage : %s <server> <data1> ... <dataN> \n", argv[0]);
+		exit(1);
+    }
+	
+	
 	bool quit = false;
 	Server server;
+	udpSender udpsender;
+	
+	udpsender.SetIp(argv[1]);
+    udpsender.Setup();
 
 	while (!quit)
 	{
@@ -102,6 +115,9 @@ int main(void)
 
 		case '9' :
 			quit = true;
+			break;
+		case 'A' :
+			udpsender.Broadcast();
 			break;
 		default:
 			std::cout << "\n\nChoice not recognized(" << choice << ")" << std::endl;

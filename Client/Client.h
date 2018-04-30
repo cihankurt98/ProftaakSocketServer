@@ -18,6 +18,7 @@ public:
 	int SendMessage(char message[]);
 	int ReceiveMessage(char server_reply[]);
 	void EndConnection();
+	void setServer(struct sockaddr_in server);
 
 	Client();
 	virtual ~Client();
