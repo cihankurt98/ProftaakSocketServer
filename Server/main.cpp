@@ -3,6 +3,22 @@
 #include "Server.h"
 #include "udpSender.h"
 
+
+static void BroadCast(udpSender* udpsender)
+{
+	int result = udpsender->Broadcast();
+	{
+		if (result == 1)
+		{
+			std::cout << "Broadcast completed" << std::endl; // kan later weg bij automatiseren.
+		}
+		else
+		{
+			std::cout << "Broadcast failed" << std::endl;
+		}
+	}
+}
+
 static void CreateSocket(Server* server)
 {
 	int result = server->CreateSocket();
@@ -29,6 +45,7 @@ static void Bind(Server* server)
 	{
 		std::cout << "Binding failed" << std::endl;
 	}
+	std::cout << result << std::endl;
 }
 
 static void Listen(Server* server)
@@ -72,21 +89,21 @@ static void showMenu( void )
 }
 
 
-int main(int argc, char *argv[])
+int main(void)
 {
-	if(argc<1)
-	{
-		printf("usage : %s <server> <data1> ... <dataN> \n", argv[0]);
-		exit(1);
-    }
-	
-	
 	bool quit = false;
 	Server server;
 	udpSender udpsender;
-	
-	udpsender.SetIp(argv[1]);
-    udpsender.Setup();
+	char* broadCast_IP = "10.0.0.255";
+
+	udpsender.SetIp(broadCast_IP);;
+
+	if (udpsender.Setup() == -1)
+	{
+		std::cout << "UDP set up failed" << std::endl;
+		quit = true;
+	}
+
 
 	while (!quit)
 	{
@@ -117,7 +134,7 @@ int main(int argc, char *argv[])
 			quit = true;
 			break;
 		case 'A' :
-			udpsender.Broadcast();
+			BroadCast(&udpsender);
 			break;
 		default:
 			std::cout << "\n\nChoice not recognized(" << choice << ")" << std::endl;

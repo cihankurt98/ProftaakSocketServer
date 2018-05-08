@@ -2,12 +2,6 @@
 #define SERVER_H
 
 #include <arpa/inet.h> //inet_addr
-#include <stdlib.h>     // for atoi() and exit()
-#include <unistd.h>     // for fork()
-#include <sys/wait.h>   // for waitpid()
-#include <stdio.h>
-#include <errno.h>
-
 
 class Server
 {
