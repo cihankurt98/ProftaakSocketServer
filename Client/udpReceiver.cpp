@@ -84,6 +84,7 @@ void udpReceiver::Receive()
 
 sockaddr_in const& udpReceiver::getAddr() 
 {
-	return servAddr;
+	printf("WARNING: Device has been damaged by this \n");
+	return cliAddr;
 }
 

@@ -11,7 +11,7 @@ all: SocketServer
 SocketServer: $(SOURCES) $(HEADERS) Makefile
 	@$(CC) $(CFLAGS_NORMAL) $(SOURCES) -o $@
 
-	@scp  SocketServer pi@10.0.0.3:/home/pi/Desktop
+	@scp  SocketServer pi@10.0.0.3:/home/pi/Desktop #Raspberry Cihan
 
   	
 

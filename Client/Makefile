@@ -13,7 +13,8 @@ all: SocketClient
 SocketClient: $(SOURCES) $(HEADERS) Makefile
 	@$(CC) $(CFLAGS_NORMAL) $(SOURCES) -o $@
 
-@scp  SocketClient pi@10.0.0.6:/home/pi/Desktop
+	@scp  SocketClient pi@10.0.0.6:/home/pi/Desktop #raspberry Milan
+	@scp  SocketClient pi@10.0.0.8:/home/pi/Desktop #raspberry 3b+ Jochem
 
 clean:
 	@rm -rf SocketClient
