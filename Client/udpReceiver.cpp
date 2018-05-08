@@ -15,7 +15,7 @@
 //for Mac OS X
 #include <stdlib.h>
 
-#define LOCAL_SERVER_PORT 1500
+#define LOCAL_SERVER_PORT 1080
 #define MAX_MSG 100
 #define BUFSIZO 30
 
@@ -84,7 +84,6 @@ void udpReceiver::Receive()
 
 sockaddr_in const& udpReceiver::getAddr() 
 {
-	printf("WARNING: Device has been damaged by this \n");
 	return cliAddr;
 }
 

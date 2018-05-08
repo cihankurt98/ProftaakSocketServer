@@ -17,7 +17,7 @@
 //for Mac OS X
 #include <stdlib.h>
 
-#define LOCAL_SERVER_PORT 1500
+#define LOCAL_SERVER_PORT 1080
 #define MAX_MSG 100
 
 class udpReceiver
