@@ -65,7 +65,7 @@ int Server::AcceptConnection()
 {
 	while (to_quit == false)
 	{
-
+		//comment voor saus
 		c = sizeof(struct sockaddr_in);
 
 		//accept connection from an incoming client
