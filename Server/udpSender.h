@@ -2,7 +2,7 @@
 #define UDPSENDER_H
 
 
-#include <netinet/in.h>
+#include <arpa/inet.h>
 
 #define MAX_MSG 100
 #define BUFSIZO 30
@@ -21,8 +21,6 @@ class udpSender
 	
 	private:
 	  int sd;
-	  int rc;
-	  int i;
 	  int n;
 	  struct sockaddr_in cliAddr;
 	  struct sockaddr_in remoteServAddr;
