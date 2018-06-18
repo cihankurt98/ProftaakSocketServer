@@ -28,6 +28,7 @@ class udpReceiver
 		void Bind();
 		void Receive();
 		sockaddr_in const& getAddr();
+		void EndConnection();
 	
 	private:
 		int sd;

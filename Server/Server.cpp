@@ -6,7 +6,7 @@
 
 #include "Server.h"
 
-#define TIMEOUT 3
+#define TIMEOUT 10
 
 Server::Server()
 {
@@ -15,6 +15,7 @@ Server::Server()
 
 Server::~Server()
 {
+	close(socket_desc);
 }
 
 int Server::CreateSocket()
@@ -27,7 +28,7 @@ int Server::CreateSocket()
 
 	struct timeval tv =
 	{
-		.tv_sec = timeOut,
+		.tv_sec = TIMEOUT,
 		.tv_usec = 0,
 	};
 
@@ -63,32 +64,44 @@ void Server::Listen()
 
 int Server::AcceptConnection()
 {
+	to_quit = false;
 	while (to_quit == false)
 	{
 		//comment voor saus
 		c = sizeof(struct sockaddr_in);
-
 		//accept connection from an incoming client
 		client_sock = accept(socket_desc, (struct sockaddr *)&client, (socklen_t*)&c);
-		processID = fork();
-		if (client_sock < 0 && processID < 0)
+		
+		if (client_sock == -1)
 		{
-			return -1;
-		}
-
-		if (processID == 0)
-		{
-			// processID == 0: child process
-			Receive();
-			exit (0);        /* Child process terminates */
+			// timed out
 		}
 		else
 		{
-			// processID > 0: main process
-			std::cout << "main waiting..." << getpid() << std::endl;
+			processID = fork();
+			if (processID < 0)
+			{
+				to_quit = false;
+			}
 
-			sleep (2);
+			if (processID == 0)
+			{
+				std::cout << "FOUND NEW PRINTER!" << std::endl;
+				// processID == 0: child process
+				Receive();
+				//exit (0);        /* Child process terminates */
+			}
+			else
+			{
+				// processID > 0: main process
+				//std::cout << "main waiting..." << getpid() << std::endl;
+
+				sleep (2);
+			}			
 		}
+		
+
+		
 
 	}
 	close(client_sock);
@@ -97,10 +110,11 @@ int Server::AcceptConnection()
 }
 
 void Server::Receive() //manier zoeken om de std::cout weg te halen, moet in main
-{
-
-	while ( (read_size = recv(client_sock , client_message , 2000 , 0)) > 0 )
-	{
+{	
+	char client_message2[] = "pieter";
+			write(client_sock , client_message2 , strlen(client_message2));
+	/*while ( (read_size = recv(client_sock , client_message , 2000 , 0)) > 0 )
+	{   s
 		std::cout << read_size << std::endl;
 		client_message[read_size] = '\0';
 		write(client_sock , client_message , strlen(client_message));
@@ -115,7 +129,7 @@ void Server::Receive() //manier zoeken om de std::cout weg te halen, moet in mai
 	else if (read_size == -1)
 	{
 		std::cout << "recv failed" << std::endl;
-	}
+	}*/
 }
 
 /* De bovenstaande code zal een server starten op localhost (127.0.0.1) op poort 8888.

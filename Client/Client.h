@@ -10,13 +10,14 @@ private:
 	struct sockaddr_in server;
 	//char message[1000];
 	//char last_server_reply[2000];
+	int bytes;
 	
 
 public:
 	int CreateSocket();
 	int ConnectToServer();
 	int SendMessage(char message[]);
-	int ReceiveMessage(char server_reply[]);
+	bool ReceiveMessage(char server_reply[]);
 	void EndConnection();
 	void setServer(struct sockaddr_in server);
 

@@ -87,3 +87,8 @@ sockaddr_in const& udpReceiver::getAddr()
 	return cliAddr;
 }
 
+void udpReceiver::EndConnection()
+{
+	close(sd);
+}
+

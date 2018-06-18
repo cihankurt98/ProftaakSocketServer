@@ -27,7 +27,6 @@ int Client::CreateSocket()
 		return -1;
 	}
 
-	//server.sin_addr.s_addr = inet_addr("192.168.19.167");
 	server.sin_family = AF_INET;
 	server.sin_port = htons( 8888 );
 	return 1;
@@ -51,13 +50,15 @@ int Client::SendMessage(char message[])
 	return 1;
 }
 
-int Client::ReceiveMessage(char server_reply[])
+bool Client::ReceiveMessage(char server_reply[])
 {
-	if ( recv(sock , server_reply , 2000 , 0) < 0)
+	std::cout << "ga recieven " << std::endl;
+	if (bytes = recv(sock , server_reply , 2000 , 0) < 0)
 	{
-		return -1;
+		return false;
 	}
-	return 1;
+	
+	return true;
 }
 
 void Client::EndConnection()

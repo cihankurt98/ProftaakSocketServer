@@ -44,19 +44,22 @@ static void SendMessage(Client* client, char message[])
 	}
 }
 
-static void ReceiveMessage(Client* client)
+static bool ReceiveMessage(Client* client)
 {
 	char server_reply[2000];
-	int result = client->ReceiveMessage(server_reply);
+	bool result = client->ReceiveMessage(server_reply);
 
-	if (result == 1)
+	if (result)
 	{
 		std::cout << "Server reply: " << server_reply << std::endl;
 	}
 	else
 	{
 		std::cout << "recv failed" << std::endl;
+		return false;
 	}
+	
+	return true;
 }
 
 static void EndConnection(Client* client)
@@ -83,13 +86,38 @@ static void showMenu( void )
 
 int main(void)
 {
-	bool quit = false;
+	// stap 1 : ontvang broadcast
+	bool quit = true;
 	Client client;
 	udpReceiver udpreceiver;
 	
 	udpreceiver.CreateSocket();
 	udpreceiver.Bind();	
-
+	std::cout << "waiting on broadcast" << std::endl;
+	udpreceiver.Receive();
+	struct sockaddr_in test = udpreceiver.getAddr();
+	client.setServer(test);
+	
+	udpreceiver.EndConnection();
+	
+	
+	// stap 2 : maak tcp zooi aan
+	CreateSocket(&client);
+	ConnectToServer(&client);
+	
+	
+	std::cout << "starting to receive messages" << std::endl;
+	// stap 3 : ga tcp berichten ontvangen
+	
+	while(quit)
+	{
+		quit = ReceiveMessage(&client);
+	}
+	
+	EndConnection(&client);
+	
+	std::cout << "printer closed, see you soon again" << std::endl;
+/*
 	while (!quit)
 	{
 		char choice = '\0';
@@ -120,17 +148,12 @@ int main(void)
 			quit = true;
 			break;
 		case 'A' :
-		{
-			udpreceiver.Receive();	
-			struct sockaddr_in test = udpreceiver.getAddr();
-			client.setServer(test);	
-			break;
-		}
+			std::cout << "holder" << std::endl;
 		default:
 			std::cout << "\n\nChoice not recognized(" << choice << ")" << std::endl;
 			break;
 		}
-	}
+	}*/
 
 	return 0;
 }
